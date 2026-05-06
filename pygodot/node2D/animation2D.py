@@ -29,7 +29,7 @@ class Animation2D(Sprite2D):
 
         count_repeat = kw.get('count_repeat', 0) * self.frames
 
-        if count_repeat: count_repeat += 1
+        if count_repeat: count_repeat -= 1
 
         self.timer = TimerNode(kw.get('duration', 50), count_repeat, running=False)
         

@@ -16,7 +16,7 @@ class BaseAttack(node2D.Node2D):
     def ready(self):
 
         self.player = self.find_in_tree_node('Player')
-        self.enemies = self.find_in_tree_node('EnenmiesNodePool')
+        self.enemies = self.find_in_tree_node('EnemiesNodePool')
         return super().ready()
 
 
@@ -25,7 +25,7 @@ class BaseAttack(node2D.Node2D):
 
 
 
-class SwordAtteck(node2D.Node2D):
+class SwordAtteck(BaseAttack):
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
@@ -56,6 +56,7 @@ class SwordAtteck(node2D.Node2D):
         col.connect('on_collision', self._attack, self)
 
         self._damage = 10
+        self.state = True
 
 
     def _take_attack(self):
@@ -65,18 +66,25 @@ class SwordAtteck(node2D.Node2D):
     def _attack(self, collider):
         if not self._can_attack: return None
 
-        self._sword_animation.show()
-        self._sword_animation.play()
-        self._can_attack = False
+        if self.state:
+            self._sword_animation.show()
+            self._sword_animation.play()
+            self.state = False
 
         hp_comp = collider.parent
         hp_comp._take_damage(self._damage)
         pass
 
+    def process(self, delta_time):
+        if not self.state:
+            self.state = True
+            self._can_attack = False
+        return super().process(delta_time)
+
     pass
 
 
-class ArcherAtteck(node.Node):
+class ArcherAtteck(BaseAttack):
 
     name='ArcherAttack'
 
@@ -96,33 +104,27 @@ class ArcherAtteck(node.Node):
         self._arrow_pool = nodepool.NodePool(ArrowEntity)
         
         pass
-
-    def ready(self):
-        self.player = self.find_in_tree_node('Player')
-        self.entity_list = self.find_in_tree_node('EnemiesNodePool')
-        return super().ready()
     
     def _spaw_arrow(self):
-        if not self.entity_list:
-            self.entity_list = self.find_in_tree_node('EnemiesNodePool')
+        if not self.enemies:
+            self.enemies = self.find_in_tree_node('EnemiesNodePool')
 
-        if self.entity_list and len(self.entity_list.children):
+        if self.enemies and len(self.enemies.children):
             bj = self._arrow_pool.acquire()
-            print('WHAT', bj, bj.visible)
             self._arrow_list.append_children(bj)
         pass
 
     pass
 
 
-class ArrowEntity(node2D.Collide2D):
+class ArrowEntity(BaseAttack):
 
 
     def __init__(self, *args, **kw):
 
         super().__init__(*args, **kw)
         
-        self.plr = None
+        self.player = None
 
         self.image = node2D.Sprite2D(parent=self,
                                      image_name='Arrow.png',
@@ -166,16 +168,12 @@ class ArrowEntity(node2D.Collide2D):
 
     def ready(self):
         super().ready()
-        
-        if self.plr is None:
-            self.plr = self.find_in_tree_node('Player')
 
-        ent = self.find_in_tree_node('EnemiesNodePool')
-        ent = ent.children[random.randint(0, len(ent.children) - 1)]
+        ent = self.enemies.children[random.randint(0, len(self.enemies.children) - 1)]
         
-        self.vec: Vector2D = ent.global_position() - self.plr.global_position()
+        self.vec: Vector2D = ent.global_position() - self.player.global_position()
 
-        self.set_local_position(self.plr.global_position())
+        self.set_local_position(self.player.global_position())
 
         self.timer.play()
 
