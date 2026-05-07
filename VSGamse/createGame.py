@@ -9,7 +9,11 @@ from .spawnEnemies import *
 def CreateGame(root: node.Node):
 
 
-    spn = SpawnEnemiesNode(parent=root)
+    SpawnEnemiesNode(parent=root)
+
+    cn = root.find_in_tree_node('CounterDeathEnemy')
+
+    cn.show()
 
     pass
 

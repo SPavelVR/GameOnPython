@@ -13,6 +13,8 @@ class PlayerNode(node2D.CharacterBody2D):
 
     name='Player'
 
+    MAX_HP = 10
+
     def __init__(self):
         super().__init__()
 
@@ -36,8 +38,6 @@ class PlayerNode(node2D.CharacterBody2D):
         TileMap(parent=self)
         
         node2D.Camera2D(parent=self).to_center()
-
-        self.MAX_HP = 10
 
         hp = HealthComponent(parent=self,
                              MAX_HP=self.MAX_HP)
@@ -128,6 +128,7 @@ class PlayerNode(node2D.CharacterBody2D):
     def _death_entity(self):
 
         dm = self.find_in_tree_node('DeathMenu')
+        cn = self.find_in_tree_node('CounterDeathEnemy')
 
         parent = dm.parent
 
@@ -135,6 +136,7 @@ class PlayerNode(node2D.CharacterBody2D):
             c.hide()
 
         dm.show()
+        cn.show()
 
         pass
 
@@ -143,6 +145,8 @@ class PlayerNode(node2D.CharacterBody2D):
 
 
 class KnifePlayerNode(PlayerNode):
+
+    MAX_HP = 20
 
     def __init__(self):
         super().__init__()
@@ -172,6 +176,8 @@ class KnifePlayerNode(PlayerNode):
 
 
 class ArcherPlayerNode(PlayerNode):
+
+    MAX_HP = 5
 
     def __init__(self):
         super().__init__()

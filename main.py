@@ -28,6 +28,7 @@ node.append_children(game)
 
 deathMenu = VSGamse.DeathMenu()
 node.append_children(deathMenu)
+node.append_children(VSGamse.CounterDeathEnemy())
 node.add_script(VSGamse.ControlScript())
 #node.append_children(VSGamse.PlayerNode())
 #node.append_children(VSGamse.SpawnEnemiesNode())

@@ -212,3 +212,41 @@ class DeathMenu(nodeUI.NodeUI):
 
 
 
+class CounterDeathEnemy(nodeUI.NodeUI):
+
+    name='CounterDeathEnemy'
+
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+
+        self.txt = nodeUI.TextUI(color=(0,0,0),
+                      layer=10,
+                      size=50,
+                      text='0',
+                      filefont='./fonts/BoldPixels.ttf'
+                      )
+                      
+        self.txt.position += Vector2D(10, 10)
+        
+        self.append_children(self.txt)
+
+        self.count = 0
+
+        self.hide()
+        pass
+
+    def process(self, delta_time):
+
+        l = systems.EventSystem().check_signal('kill_enemy')
+
+        if l:
+            self.count += len(l)
+            self.txt.text = str(self.count)
+            self.txt.update_shape()
+        return super().process(delta_time)
+
+
+    pass
+
+
+

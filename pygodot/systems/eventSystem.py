@@ -22,8 +22,30 @@ class EventSystem(GameSystem):
     mouse_pressed: set  = set()
     mouse_up: set       = set()
 
-    def process(self, delta_time):
+    global_signal: dict = dict()
 
+    def check_signal(self, name: str):
+        l = self.global_signal.get(name)
+
+        if l:
+            self.global_signal.pop(name)
+            return l
+        
+        return None
+    
+    def call_signal(self, name: str, object):
+
+        caller = self.global_signal.get(name)
+
+        if caller is None:
+            caller = list()
+            self.global_signal[name] = caller
+
+        caller.append(object)
+        pass
+
+    def process(self, delta_time):
+        
         self.mouse_position = Vector2D(pygame.mouse.get_pos())
 
         scale = Display().get_scale()

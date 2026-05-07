@@ -173,7 +173,9 @@ class ArrowEntity(BaseAttack):
         
         self.vec: Vector2D = ent.global_position() - self.player.global_position()
 
-        self.set_local_position(self.player.global_position())
+        self.set_local_position(self.player.global_position() - Vector2D(self.image.local_collide().center))
+
+
 
         self.timer.play()
 

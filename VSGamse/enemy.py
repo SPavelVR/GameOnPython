@@ -68,6 +68,8 @@ class EnemyNode(node2D.CharacterBody2D):
 
         self.anm.connect('timeout', self._rem_enemy, self)
         self.script = None
+
+        systems.EventSystem().call_signal('kill_enemy', self)
         pass
 
     def _rem_enemy(self):
