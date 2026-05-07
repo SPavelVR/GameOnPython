@@ -175,7 +175,7 @@ class DeathMenu(nodeUI.NodeUI):
             display_rect.h // 2 - 100
         )
         
-        self.restart_button = SelectionArea(
+        self.exit_button = SelectionArea(
             parent=self,
             color=(255, 255, 255),
             layer=1,
@@ -196,16 +196,16 @@ class DeathMenu(nodeUI.NodeUI):
             filefont='./fonts/BoldPixels.ttf'
         )
 
-        self.restart_button.append_children(button_text)
+        self.exit_button.append_children(button_text)
         
         button_text.position = Vector2D(
             (250 - button_text.collide.w) // 2,
             (60 - button_text.collide.h) // 2
         )
-        self.restart_button.connect('_on_mouse_active', self._on_restart, self)
+        self.exit_button.connect('_on_mouse_active', self._on_gameover, self)
         self.hide()
     
-    def _on_restart(self, button):
+    def _on_gameover(self, button):
         systems.EventSystem()._running = False
         pass
     pass

@@ -99,11 +99,6 @@ class PlayerNode(node2D.CharacterBody2D):
         if keys[pygame.K_s]: 
             player_vector.y = 1
 
-        if keys[pygame.K_F11]:
-            managers.Display().set_mode((0, 0), pygame.FULLSCREEN)
-        elif keys[pygame.K_F10]:
-            managers.Display().set_mode((1200, 800), pygame.RESIZABLE | pygame.DOUBLEBUF | pygame.HWSURFACE)
-
         
         player_vector = player_vector.normilized() * self.speed * delta_time / 1000
         #player_vector = player_vector * self.speed
