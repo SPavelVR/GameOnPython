@@ -23,15 +23,14 @@ class HealthComponent(node2D.Node2D):
 
         self._can_take_damage = True
         self.MAX_HP = kw.get('MAX_HP', 10)
-        self.current_HP = self.MAX_HP
         pass
     
     def _take_damage(self, damage: int):
 
         if not self._can_take_damage: return
 
-        self._can_take_damage = False
-        self._take_damage_timer.play()
+        #self._can_take_damage = False
+        #self._take_damage_timer.play()
 
         
         self.current_HP = clamp(self.current_HP - damage, 0, self.MAX_HP)
@@ -50,6 +49,8 @@ class HealthComponent(node2D.Node2D):
         pass
     
     def ready(self):
+        self.current_HP = self.MAX_HP
+
         return super().ready()
     
     def process(self, delta_time):
@@ -87,7 +88,6 @@ class AttackEnemyComponent(node2D.Node2D):
         self._sword_attck.to_center()
 
         self._sword_attck.connect('timeout', self._take_attack, self)
-        self._sword_attck.hide()
 
         self._can_attack = True
 
@@ -114,6 +114,7 @@ class AttackEnemyComponent(node2D.Node2D):
         return super().ready()
     
     def process(self, delta_time):
+        if self._can_attack: self._sword_attck.visible = False
         return super().process(delta_time)
     
     def finaly(self):

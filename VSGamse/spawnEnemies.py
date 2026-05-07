@@ -48,3 +48,34 @@ class SpawnEnemiesNode(node.Node):
         pass
 
     pass
+
+
+
+class ReplacingStateSpawner:
+
+
+    def __init__(self):
+        pass
+
+
+    pass
+
+
+class ISpawner:
+
+    def spawn_enemy(self)->EnemyNode:
+        pass
+    pass
+
+
+
+class EasySpawn(ISpawner):
+
+
+    spawn_enemy = EnemyNode
+
+
+    def spawn_enemy(self):
+        return self.spawn_enemy()
+
+    pass

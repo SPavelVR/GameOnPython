@@ -14,14 +14,14 @@ class Collision2D(Collide2D):
     include_systems = [CollisionSystem]
 
     layer: int = 0
-    mask: list = None
+    mask: int = None
 
     collidable = True
     heavy = 0
 
     def __init__(self, *args, **kw):
-        self.layer = clamp(kw.get("layer", 0), 0, 32)
-        self.mask  = list(map(lambda x: clamp(x, 0, 32), kw.get('mask', [])))
+        self.layer = 1 << clamp(kw.get("layer", 0), 0, 32)
+        self.mask  = getMaskByList(map(lambda x: clamp(x, 0, 32), kw.get('mask', [])))
 
         self.collidable = kw.get('collidable', self.collidable)
         super().__init__(*args, **kw)

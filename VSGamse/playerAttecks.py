@@ -154,7 +154,7 @@ class ArrowEntity(BaseAttack):
         self.timer.connect('timeout', self._kill_arrow, self)
 
         self.speed = 300
-        self._damage = 60
+        self._damage = 5
         pass
 
     def _attack(self, collider):
@@ -164,7 +164,8 @@ class ArrowEntity(BaseAttack):
         pass
 
     def _kill_arrow(self):
-        self.parent.quick_remove_child(self)
+        if self.parent:
+            self.parent.quick_remove_child(self)
 
     def ready(self):
         super().ready()

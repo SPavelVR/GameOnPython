@@ -211,3 +211,13 @@ def clamp(value, min_value, max_value):
 
 def fraction(value):
     return float(value - int(value))
+
+
+def getMaskByList(mask: list):
+
+    res = 0
+
+    for i in mask:
+        res |= (1 << i)
+
+    return res

@@ -43,12 +43,12 @@ class CollisionSystem(GameSystem):
 
                 collide_flag = False
 
-                if node1.layer in node2.mask:
+                if node1.layer & node2.mask:
                     node2.on_collision(node1)
                     collide_flag = True
                     pass
 
-                if node2.layer in node1.collide:
+                if node2.layer & node1.mask:
                     node1.on_collision(node2)
                     collide_flag = True
                     pass
@@ -115,7 +115,7 @@ class CollisionSystem(GameSystem):
                     collide_falg = True
                     pass
 
-                if node2.layer in node1.collide:
+                if node2.layer in node1.mask:
                     node1.on_collision(node2)
                     collide_falg = True
                     pass

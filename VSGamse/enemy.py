@@ -33,25 +33,12 @@ class EnemyNode(node2D.CharacterBody2D):
         self._attack_list = node2D.Node2D(parent=self, name='ListAttack')
         AttackEnemyComponent(parent=self._attack_list)
 
-        prg = ProgressBar(parent=self,
+        self.prg = ProgressBar(parent=self,
                            layer=5,
                            MAX_PROGRESS=self.MAX_HP,
                            bg_collide=(0,0,100,15),
                            bg_color=(87, 89, 82),
                            fr_color=(186, 26, 15))
-        
-        prg.set_progress(self.MAX_HP)
-        prg.position.y -= 50
-        hp.connect('_take_damage', prg.set_progress, prg)
-        
-        self.add_script(EnemyScript())
-        pass
-
-    def _death_entity(self):
-
-        for c in self.children:
-            c.hide()
-
         
         self.anm = node2D.Animation2D('explos.png', 
                                  Vector2D(100, 100), 
@@ -62,14 +49,37 @@ class EnemyNode(node2D.CharacterBody2D):
                                  sub_surface=Rect(0,0,48,48),
                                  duration=100,
                                  name='ExitAnimation')
-
+        
         self.anm.to_center()
+
+        self.prg.position.y -= 50
+        hp.connect('_take_damage',  self.prg.set_progress, self.prg)
+        pass
+
+    def ready(self):
+
+        for c in self.children:
+            c.show()
+
+        self.anm.hide()
+
+        self.prg.set_progress(self.MAX_HP)
+        self.add_script(EnemyScript())
+        return super().ready()
+
+    def _death_entity(self):
+
+        for c in self.children:
+            c.hide()
+
+
+        self.anm.show()
         self.anm.play()
+
+        systems.EventSystem().call_signal('kill_enemy', self)
 
         self.anm.connect('timeout', self._rem_enemy, self)
         self.script = None
-
-        systems.EventSystem().call_signal('kill_enemy', self)
         pass
 
     def _rem_enemy(self):
@@ -82,10 +92,11 @@ class EnemyNode(node2D.CharacterBody2D):
 
 class EnemyScript(script.Script):
 
+    player = None
 
     def ready(self):
 
-        self.player = self.owner.find_in_tree_node('Player')
+        if not self.player: self.player = self.owner.find_in_tree_node('Player')
         self.speed = 500
 
         return super().ready()

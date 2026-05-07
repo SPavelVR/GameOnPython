@@ -47,6 +47,11 @@ class Node:
         self.script.owner = self
         pass
 
+    def remove_script(self):
+        if not self.script: return None
+        self.script.owner = None
+        self.script = None
+
     def connect(self, name_signal: str, func, node):
         pool = self.signal.get(name_signal)
         if pool is None:
@@ -230,23 +235,22 @@ class Node:
             self.node_pool.release(self)
         pass
 
+    def __str__(self):
+        return f'<Node \'{self.type_name}\' name \'{self.name}\' id [{hex(id(self)).upper()[2:]}]  {self.visible}  {self._pause}>'
+    
+    def __repr__(self):
+        return f'<Node {self.type_name} - {self.name}  {id(self)}>'
+
     def show(self):
-        if self.visible or (self.parent and not self.parent.visible): return
+        if self.parent and not self.parent.visible: return
 
         self.visible = True
 
         for i in self.children:
             i.show()
         pass
-    
-    def __str__(self):
-        return f'<Node \'{self.type_name}\' name \'{self.name}\' id [{hex(id(self)).upper()[2:]}]  {self.visible}  {self._pause}>'
-    
-    def __repr__(self):
-        return f'<Node {self.type_name} - {self.name}  {id(self)}>'
-    def hide(self):
-        if not self.visible: return
 
+    def hide(self):
         self.visible = False
 
         for i in self.children:
