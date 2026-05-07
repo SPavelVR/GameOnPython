@@ -46,7 +46,7 @@ class SwordAtteck(BaseAttack):
         col = node2D.Collision2D(
             layer=6,
             mask=[7],
-            collide=Rect(0,0,500,500),
+            collide=Rect(0,0,800,800),
             collidable=False,
             parent=self
         )
