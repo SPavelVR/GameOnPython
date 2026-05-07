@@ -68,7 +68,6 @@ class EnemyNode(node2D.CharacterBody2D):
         return super().ready()
 
     def _death_entity(self):
-
         for c in self.children:
             c.hide()
 
@@ -83,6 +82,8 @@ class EnemyNode(node2D.CharacterBody2D):
         pass
 
     def _rem_enemy(self):
+        if not self.parent: return None
+        
         self.anm.hide()
         self.parent.quick_remove_child(self)
 

@@ -40,8 +40,8 @@ class SpawnEnemiesNode(node.Node):
         angel = random.random() * 2 * math.pi
 
         vec = Vector2D(math.cos(angel), math.sin(angel)) * self.radius
-        #enemy = self.enemies_pool.acquire()
-        enemy = EnemyNode()
+        enemy = self.enemies_pool.acquire()
+        #enemy = EnemyNode()
         self.enemies_node_pool.append_children(enemy)
         enemy.set_global_position(pos + vec)
 
