@@ -79,6 +79,11 @@ class SwordAtteck(BaseAttack):
         if not self.state:
             self.state = True
             self._can_attack = False
+
+        if self.player.flip_v != self._sword_animation.flip_x:
+            self._sword_animation.flip_x = self.player.flip_v
+            self._sword_animation.update_shape()
+
         return super().process(delta_time)
 
     pass

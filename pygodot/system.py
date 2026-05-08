@@ -1,6 +1,6 @@
-from .architecture import Architecture
 
-class GameSystem(Architecture):
+
+class GameSystem:
 
     name_system: str    = None
     node_array: list    = None
@@ -42,5 +42,17 @@ class GameSystem(Architecture):
         self.node_array.clear()
 
     def process(self, delta_time: int):
+        pass
+
+    def ready(self):
+        pass
+
+    def finaly(self):
+        pass
+
+    def __call__(self, delta_time):
+        if self.pause: return False
+
+        self.process(delta_time)
         pass
     pass
