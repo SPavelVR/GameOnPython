@@ -95,11 +95,15 @@ class CollisionSystem(GameSystem):
 
         size = len(self.node_array)
         
-        for i in range(size):
+        i = 0
+        while i < len(self.node_array):
             node1 = self.node_array[i]
+            i += 1
             if not node1.visible: continue
-            for j in range(i + 1, size):
+            j = i + 1
+            while j < len(self.node_array):
                 node2 = self.node_array[j]
+                j += 1
                 if not node2.visible: continue
 
 
